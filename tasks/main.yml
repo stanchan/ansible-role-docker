@@ -1,0 +1,12 @@
+---
+- name: Setup alpine
+  include_tasks: alpine.yml
+
+- name: Setup debian
+  include_tasks: debian.yml
+
+- name: Setup redhat
+  include_tasks: redhat.yml
+
+- name: Setup prereqs
+  include_tasks: prereqs.yml

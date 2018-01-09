@@ -1,0 +1,25 @@
+---
+- name: install python packages
+  pip: 
+    name: virtualenv,docker-compose,docker-py,uptime
+
+- name: install python packages
+  pip: 
+    name: "{{ item }}"
+  with_items: "{{ required_pip }}"
+
+# - name: create docker group
+#   group:
+#     name: "{{ docker_group }}"
+#     system: yes
+#     state: present
+
+# - name: create docker user
+#   user:
+#     name: "{{ docker_user }}"
+#     state: present
+#     comment: "{{ docker_user }}"
+#     group: "{{ docker_group }}"
+#     shell: /sbin/nologin
+#     createhome: no
+#     system: yes

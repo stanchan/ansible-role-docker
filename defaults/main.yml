@@ -1,0 +1,10 @@
+---
+required_packages: []
+required_pip: []
+
+docker_build_environment: false
+docker_user: root
+docker_group: root
+
+docker_alpine_repo: http://dl-cdn.alpinelinux.org/alpine/edge/community
+docker_debian_repo: deb https://apt.dockerproject.org/repo debian-jessie main

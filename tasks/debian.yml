@@ -1,0 +1,49 @@
+---
+- name: Setup debian
+  block:
+    - name: install apt-transport-https
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+
+    - name: run apt update
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_distribution == 'Debian'
+      register: apt_result
+      until: apt_result|success
+      retries: 3
+      delay: 1
+      ignore_errors: yes
+
+    - name: retry if needed using command apt-get update
+      command: apt-get update
+      when: apt_result|failed
+
+    - name: install pip
+      apt:
+        name: python-pip
+        state: present
+
+    - name: add docker repo
+      apt_repository:
+        repo: "{{ docker_debian_repo }}"
+        state: present
+
+    - name: install docker
+      apt:
+        name: docker-engine
+        update_cache: yes
+        state: installed
+        force: yes
+
+    - name: start docker
+      service:
+        name: docker
+        state: restarted
+        daemon_reload: yes
+  when: ansible_distribution == "Debian"
