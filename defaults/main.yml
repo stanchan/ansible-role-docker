@@ -3,8 +3,11 @@ required_packages: []
 required_pip: []
 
 docker_build_environment: false
+docker_glibc_environment: false
 docker_user: root
 docker_group: root
 
 docker_alpine_repo: http://dl-cdn.alpinelinux.org/alpine/edge/community
 docker_debian_repo: deb https://apt.dockerproject.org/repo debian-jessie main
+
+glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.26-r0/glibc-2.26-r0.apk

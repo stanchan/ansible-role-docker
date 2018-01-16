@@ -1,18 +1,37 @@
 ---
   - name: Setup docker for alpine linux
     block:
-      - name: install packages
-        apk:
-          name: bash,tar,rsync,zip
-          state: present
-          update_cache: yes
 
       - name: install packages
         apk:
-          name: build-base,git,make,vim
+          name: bash,ca-certificates,rsync,tar,zip
+          state: present
+          update_cache: yes
+
+      - name: import signing key
+        get_url:
+          url: https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
+          dest: /etc/apk/keys/sgerrand.rsa.pub
+          mode: 0440
+        when: docker_glibc_environment
+
+      - name: download glibc package
+        get_url:
+          url: "{{ glibc_package_url }}"
+          dest: /tmp/glibc-2.26-r0.apk
+          mode: 0644
+        when: docker_glibc_environment
+
+      - name: install packages
+        apk:
+          name: build-base,musl-dev,git,make,gcc,g++,vim
           state: present
           update_cache: yes
         when: docker_build_environment
+      
+      - name: install glibc
+        raw: apk add /tmp/glibc-2.26-r0.apk
+        when: docker_glibc_environment
 
       - name: install additional packages
         apk:
