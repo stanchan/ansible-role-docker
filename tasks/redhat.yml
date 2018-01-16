@@ -1,1 +1,16 @@
 ---
+- name: Setup redhat
+  block:
+    - name: update all packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: add epel repo
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: install docker
+      shell: curl -fsSL https://get.docker.com/ | sh
+  when: ansible_distribution == "Redhat"
