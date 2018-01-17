@@ -1,7 +1,12 @@
 ---
+- name: remove docker-py
+  pip:
+    name: docker-py
+    state: absent
+
 - name: install python packages
   pip: 
-    name: virtualenv,docker-compose,docker-py,uptime
+    name: virtualenv,docker-compose,uptime
 
 - name: install python packages
   pip: 
