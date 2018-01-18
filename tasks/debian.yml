@@ -46,4 +46,4 @@
         name: docker
         state: restarted
         daemon_reload: yes
-  when: ansible_distribution == "Debian"
+  when: ansible_os_family == "Debian"

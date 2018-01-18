@@ -13,4 +13,4 @@
 
     - name: install docker
       shell: curl -fsSL https://get.docker.com/ | sh
-  when: ansible_distribution == "RedHat"
+  when: ansible_os_family == "RedHat"
