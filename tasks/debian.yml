@@ -1,13 +1,16 @@
 ---
 - name: Setup debian
   block:
-    - name: install apt-transport-https
+    - name: install dependent packages
       apt:
         name: "{{ item }}"
         state: present
       with_items:
         - apt-transport-https
         - ca-certificates
+        - libffi-dev
+        - python-dev
+        - python-pip
 
     - name: run apt update
       apt:
