@@ -31,9 +31,8 @@
         name: python-pip
         state: absent
 
-    - easy_install:
-        name: pip
-        state: latest
+    - name: install latest pip
+      raw: easy_install pip
 
     - name: remove docker-py
       pip:
