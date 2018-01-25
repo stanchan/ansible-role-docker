@@ -11,6 +11,20 @@
         name: epel-release
         state: latest
 
+    - name: remove docker-py
+      pip:
+        name: docker-py
+        state: absent
+
+    - name: install python packages
+      pip: 
+        name: virtualenv,docker-compose,uptime
+
+    - name: install python packages
+      pip: 
+        name: "{{ item }}"
+      with_items: "{{ required_pip }}"
+
     - name: install docker
       shell: curl -fsSL https://get.docker.com/ | sh
   when: ansible_os_family == "RedHat"

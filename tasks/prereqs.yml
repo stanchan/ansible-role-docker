@@ -1,18 +1,4 @@
 ---
-- name: remove docker-py
-  pip:
-    name: docker-py
-    state: absent
-
-- name: install python packages
-  pip: 
-    name: virtualenv,docker-compose,uptime
-
-- name: install python packages
-  pip: 
-    name: "{{ item }}"
-  with_items: "{{ required_pip }}"
-
 # - name: create docker group
 #   group:
 #     name: "{{ docker_group }}"

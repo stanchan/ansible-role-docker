@@ -38,11 +38,25 @@
         state: present
       with_items: "{{ required_packages }}"
 
-    - name: install python packages
+    - name: install alpine python packages
       apk:
         name: python-dev,py-pip,py-openssl
         state: latest
         update_cache: yes
+
+    - name: remove docker-py
+      pip:
+        name: docker-py
+        state: absent
+
+    - name: install python packages
+      pip: 
+        name: virtualenv,docker-compose,uptime
+
+    - name: install python packages
+      pip: 
+        name: "{{ item }}"
+      with_items: "{{ required_pip }}"
 
     - name: update all installed packages
       apk:
