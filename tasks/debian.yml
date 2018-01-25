@@ -10,7 +10,6 @@
         - ca-certificates
         - libffi-dev
         - python-dev
-        - python-pip
 
     - name: run apt update
       apt:
@@ -27,15 +26,19 @@
       command: apt-get update
       when: apt_result|failed
 
-    - name: install pip
+    - name: remove python-pip
       apt:
         name: python-pip
-        state: present
+        state: absent
 
     - name: remove docker-py
       pip:
         name: docker-py
         state: absent
+
+    - easy_install:
+        name: pip
+        state: latest
 
     - name: install python packages
       pip: 
