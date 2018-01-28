@@ -4,7 +4,8 @@
     - name: install dependent packages
       apt:
         name: "{{ item }}"
-        state: present
+        state: latest
+        update_cache: yes
       with_items:
         - apt-transport-https
         - ca-certificates
@@ -57,7 +58,7 @@
       apt:
         name: docker-engine
         update_cache: yes
-        state: installed
+        state: present
         force: yes
 
     - name: start docker
