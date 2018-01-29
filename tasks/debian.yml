@@ -11,6 +11,7 @@
         - ca-certificates
         - libffi-dev
         - python-dev
+        - python-setuptools
 
     - name: run apt update
       apt:
@@ -33,7 +34,10 @@
         state: absent
 
     - name: install latest pip
-      raw: easy_install pip
+      easy_install:
+        name: pip
+        executable: "{{ debian_easy_install_bin }}"
+        state: latest
 
     - name: remove docker-py
       pip:

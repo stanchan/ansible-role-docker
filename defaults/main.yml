@@ -2,6 +2,9 @@
 required_packages: []
 required_pip: []
 
+debian_easy_install_bin: /usr/bin/easy_install
+redhat_easy_install_bin: /bin/easy_install
+
 docker_build_environment: false
 docker_glibc_environment: false
 docker_user: root

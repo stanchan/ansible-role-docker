@@ -20,7 +20,10 @@
         - python-wheel
 
     - name: install latest pip
-      raw: easy_install pip
+      easy_install:
+        name: pip
+        executable: "{{ redhat_easy_install_bin }}"
+        state: latest
 
     - name: remove docker-py
       pip:
