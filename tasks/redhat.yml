@@ -11,13 +11,16 @@
         name: epel-release
         state: latest
 
-    - name: install pip
+    - name: remove python-pip
       yum:
         name: "{{ item }}"
-        state: latest
+        state: absent
       with_items:
         - python-pip
         - python-wheel
+
+    - name: install latest pip
+      raw: easy_install pip
 
     - name: remove docker-py
       pip:
