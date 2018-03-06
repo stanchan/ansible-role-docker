@@ -58,7 +58,8 @@
         repo: "{{ docker_debian_repo }}"
         state: present
 
-    - copy:
+    - name: create apt pin
+      copy:
         dest: "{{ item.file }}"
         content: |
           Package: {{ item.package }}
