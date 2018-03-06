@@ -39,6 +39,23 @@
         name: "{{ item }}"
       with_items: "{{ required_pip }}"
 
+    - name: create filesystem paths
+      file:
+        dest: "{{ docker_daemon_config_file | dirname }}"
+        owner: root
+        group: root
+        state: directory
+
+    - name: create daemon config
+      template:
+        src: daemon.json.j2
+        dest: "{{ docker_daemon_config_file }}"
+        mode: 0644
+        owner: root
+        group: root
+      notify:
+        - restart docker
+
     - name: install docker
       shell: curl -fsSL https://get.docker.com/ | sh
   when: ansible_os_family == "RedHat"

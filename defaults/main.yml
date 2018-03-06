@@ -14,3 +14,11 @@ docker_alpine_repo: http://dl-cdn.alpinelinux.org/alpine/edge/community
 docker_debian_repo: deb https://apt.dockerproject.org/repo debian-jessie main
 
 glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.26-r0/glibc-2.26-r0.apk
+
+docker_daemon_config_file: /etc/docker/daemon.json
+docker_daemon_config:
+  iptables: false
+  insecure-registries:
+    - "10.0.0.0/8"
+  storage-driver: overlay2
+  live-restore: true
