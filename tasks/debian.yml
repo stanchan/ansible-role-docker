@@ -58,6 +58,17 @@
         repo: "{{ docker_debian_repo }}"
         state: present
 
+    - copy:
+        dest: "{{ item.file }}"
+        content: |
+          Package: {{ item.package }}
+          Pin: {{ item.pin }}
+          Priority: {{ item.pin_priority }}
+        mode: 0444
+        owner: root
+        group: root
+      with_items: "{{ docker_apt_pin }}"
+
     - name: install docker
       apt:
         name: docker-engine

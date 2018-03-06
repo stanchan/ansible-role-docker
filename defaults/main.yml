@@ -22,3 +22,9 @@ docker_daemon_config:
     - "10.0.0.0/8"
   storage-driver: overlay2
   live-restore: true
+
+docker_apt_pin:
+  - file: /etc/apt/preferences.d/docker-engine
+    package: docker-engine
+    pin: version 17.05.0~ce-0~debian-jessie
+    pin_priority: 2000
