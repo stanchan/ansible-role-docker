@@ -17,7 +17,7 @@
     - name: download glibc package
       get_url:
         url: "{{ glibc_package_url }}"
-        dest: /tmp/glibc-2.26-r0.apk
+        dest: /tmp/{{ glibc_package_url|basename }}
         mode: 0644
       when: docker_glibc_environment
 
@@ -29,7 +29,7 @@
       when: docker_build_environment
       
     - name: install glibc
-      raw: apk add /tmp/glibc-2.26-r0.apk
+      raw: "apk add /tmp/{{ glibc_package_url|basename }}"
       when: docker_glibc_environment
 
     - name: install additional packages
