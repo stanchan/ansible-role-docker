@@ -3,7 +3,7 @@
   block:
     - name: install packages
       apk:
-        name: bash,ca-certificates,rsync,tar,zip
+        name: attr,bash,ca-certificates,rsync,tar,zip
         state: present
         update_cache: yes
 
