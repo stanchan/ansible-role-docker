@@ -9,6 +9,10 @@
       with_items:
         - apt-transport-https
         - ca-certificates
+        - curl
+        - gnupg2
+        - software-properties-common
+        - dirmngr
         - libffi-dev
         - python-dev
         - python-setuptools
@@ -53,9 +57,20 @@
         name: "{{ item }}"
       with_items: "{{ required_pip }}"
 
+    - name: verify gpg key installed
+      command: apt-key list
+      no_log: yes
+      register: apt_key_check
+
+    - name: update gpg key for docker repo
+      command: apt-key adv --keyserver {{ docker_apt_recv_key_server }} --recv-keys {{ docker_apt_recv_key }}
+      ignore_errors: yes
+      become: yes
+      when: apt_key_check.stdout.find("Docker Release Tool") == -1
+
     - name: add docker repo
       apt_repository:
-        repo: "{{ docker_debian_repo }}"
+        repo: "{{ docker_apt_repo }}"
         state: present
 
     - name: create apt pin
@@ -64,18 +79,32 @@
         content: |
           Package: {{ item.package }}
           Pin: {{ item.pin }}
-          Priority: {{ item.pin_priority }}
+          Pin-Priority: {{ item.pin_priority }}
         mode: 0444
         owner: root
         group: root
       with_items: "{{ docker_apt_pin }}"
 
+    - name: run apt update
+      apt:
+        update_cache: yes
+      register: apt_result
+      until: apt_result|success
+      retries: 3
+      delay: 1
+      ignore_errors: yes
+
+    - name: retry if needed using command apt-get update
+      command: apt-get update
+      when: apt_result|failed
+
     - name: install docker
       apt:
-        name: docker-engine
+        name: "docker-engine={{ docker_version }}~ce-0~debian-{{ ansible_distribution_release }}"
         update_cache: yes
         state: present
         force: yes
+        cache_valid_time: "{{ apt_cache_valid_time }}"
 
     - name: create filesystem paths
       file:

@@ -5,13 +5,20 @@ required_pip: []
 debian_easy_install_bin: /usr/bin/easy_install
 redhat_easy_install_bin: /bin/easy_install
 
+docker_version: 17.05.0
+
 docker_build_environment: false
 docker_glibc_environment: false
 docker_user: root
 docker_group: root
 
 docker_alpine_repo: http://dl-cdn.alpinelinux.org/alpine/edge/community
-docker_debian_repo: deb https://apt.dockerproject.org/repo debian-jessie main
+docker_debian_repo: https://apt.dockerproject.org/repo
+
+docker_apt_recv_key_server: hkp://p80.pool.sks-keyservers.net:80
+docker_apt_recv_key: 58118E89F3A912897C070ADBF76221572C52609D
+docker_apt_repo: "deb {{ docker_debian_repo }} debian-{{ ansible_distribution_release }} main"
+apt_cache_valid_time: 600
 
 glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
 
@@ -26,5 +33,5 @@ docker_daemon_config:
 docker_apt_pin:
   - file: /etc/apt/preferences.d/docker-engine
     package: docker-engine
-    pin: version 17.05.0~ce-0~debian-jessie
+    pin: "version {{ docker_version }}~ce-0~debian-{{ ansible_distribution_release }}"
     pin_priority: 2000
