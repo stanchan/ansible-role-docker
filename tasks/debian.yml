@@ -37,11 +37,17 @@
         name: python-pip
         state: absent
 
+    - name: check pip version
+      shell: pip --version | cut -d" " -f2
+      register: pip_check
+      ignore_errors: yes
+
     - name: install latest pip
       easy_install:
         name: pip
         executable: "{{ debian_easy_install_bin }}"
         state: latest
+      when: pip_check.stdout.find("{{ pip_version }}") == -1
 
     - name: remove docker-py
       pip:
@@ -49,11 +55,11 @@
         state: absent
 
     - name: install python packages
-      pip: 
+      pip:
         name: virtualenv,docker-compose,uptime
 
     - name: install python packages
-      pip: 
+      pip:
         name: "{{ item }}"
       with_items: "{{ required_pip }}"
 
@@ -122,10 +128,4 @@
         group: root
       notify:
         - restart docker
-
-    - name: start docker
-      service:
-        name: docker
-        state: restarted
-        daemon_reload: yes
   when: ansible_os_family == "Debian"

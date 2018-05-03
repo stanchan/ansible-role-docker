@@ -1,11 +1,11 @@
 ---
 required_packages: []
 required_pip: []
-
+pip_version: 9.0.1
 debian_easy_install_bin: /usr/bin/easy_install
 redhat_easy_install_bin: /bin/easy_install
 
-docker_version: 17.05.0
+docker_version: 18.03.0
 
 docker_build_environment: false
 docker_glibc_environment: false
@@ -17,7 +17,7 @@ docker_debian_repo: https://apt.dockerproject.org/repo
 
 docker_apt_recv_key_server: hkp://p80.pool.sks-keyservers.net:80
 docker_apt_recv_key: 58118E89F3A912897C070ADBF76221572C52609D
-docker_apt_repo: "deb {{ docker_debian_repo }} debian-{{ ansible_distribution_release }} main"
+docker_apt_repo: "deb {{ docker_debian_repo }} {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} main"
 apt_cache_valid_time: 600
 
 glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk

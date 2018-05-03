@@ -10,3 +10,6 @@
 
 - name: Setup redhat
   include_tasks: redhat.yml
+
+- name: Start service
+  include_tasks: service.yml

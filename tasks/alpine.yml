@@ -27,7 +27,7 @@
         state: present
         update_cache: yes
       when: docker_build_environment
-      
+
     - name: install glibc
       raw: "apk add /tmp/{{ glibc_package_url|basename }}"
       when: docker_glibc_environment
@@ -50,11 +50,11 @@
         state: absent
 
     - name: install python packages
-      pip: 
+      pip:
         name: virtualenv,docker-compose,uptime
 
     - name: install python packages
-      pip: 
+      pip:
         name: "{{ item }}"
       with_items: "{{ required_pip }}"
 
@@ -83,10 +83,4 @@
 
     - name: gather facts
       setup: filter="*"
-
-    - name: start docker
-      service:
-        name: docker
-        enabled: yes
-        state: started
   when: ansible_os_family == "Alpine"
