@@ -1,7 +1,6 @@
 ---
 required_packages: []
 required_pip: []
-pip_version: 9.0.1
 debian_easy_install_bin: /usr/bin/easy_install
 redhat_easy_install_bin: /bin/easy_install
 

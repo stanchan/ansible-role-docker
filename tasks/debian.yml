@@ -42,12 +42,17 @@
       register: pip_check
       ignore_errors: yes
 
+    - name: check pip latest
+      set_fact:
+        pip_latest: "{{ lookup('pypi_version', 'pip') }}"
+      ignore_errors: yes
+
     - name: install latest pip
       easy_install:
         name: pip
         executable: "{{ debian_easy_install_bin }}"
         state: latest
-      when: pip_check.stdout.find("{{ pip_version }}") == -1
+      when: pip_check.stdout.find("{{ pip_latest }}") == -1
 
     - name: remove docker-py
       pip:
@@ -106,7 +111,7 @@
 
     - name: install docker
       apt:
-        name: "docker-engine={{ docker_version }}~ce-0~debian-{{ ansible_distribution_release }}"
+        name: "docker-engine={{ docker_version }}~ce-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
         update_cache: yes
         state: present
         force: yes

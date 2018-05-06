@@ -1,3 +1,5 @@
+.vscode
+
 *.retry
 tests/test.sh
 
