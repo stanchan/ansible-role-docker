@@ -14,3 +14,7 @@
 #     shell: /sbin/nologin
 #     createhome: no
 #     system: yes
+
+- name: install python packages
+  pip:
+    name: requests

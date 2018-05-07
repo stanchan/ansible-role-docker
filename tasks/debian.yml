@@ -45,7 +45,6 @@
     - name: check pip latest
       set_fact:
         pip_latest: "{{ lookup('pypi_version', 'pip') }}"
-      ignore_errors: yes
 
     - name: install latest pip
       easy_install:
