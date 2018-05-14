@@ -1,57 +1,11 @@
 ---
 - name: Setup docker for alpine linux
   block:
-    - name: install packages
-      apk:
-        name: attr,bash,ca-certificates,rsync,tar,zip
-        state: present
-        update_cache: yes
-
-    - name: import signing key
-      get_url:
-        url: https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
-        dest: /etc/apk/keys/sgerrand.rsa.pub
-        mode: 0440
-      when: docker_glibc_environment
-
-    - name: download glibc package
-      get_url:
-        url: "{{ glibc_package_url }}"
-        dest: /tmp/{{ glibc_package_url|basename }}
-        mode: 0644
-      when: docker_glibc_environment
-
-    - name: install packages
-      apk:
-        name: build-base,musl-dev,git,make,gcc,g++,vim
-        state: present
-        update_cache: yes
-      when: docker_build_environment
-
-    - name: install glibc
-      raw: "apk add /tmp/{{ glibc_package_url|basename }}"
-      when: docker_glibc_environment
-
     - name: install additional packages
       apk:
         name: "{{ item }}"
         state: present
       with_items: "{{ required_packages }}"
-
-    - name: install alpine python packages
-      apk:
-        name: python-dev,py-pip,py-openssl
-        state: latest
-        update_cache: yes
-
-    - name: remove docker-py
-      pip:
-        name: docker-py
-        state: absent
-
-    - name: install python packages
-      pip:
-        name: virtualenv,docker-compose,uptime
 
     - name: install python packages
       pip:
@@ -61,9 +15,6 @@
     - name: update all installed packages
       apk:
         upgrade: yes
-
-    # - name: choose a fast and reliable mirror
-    #   raw: setup-apkrepos -f
 
     - name: install docker
       apk:

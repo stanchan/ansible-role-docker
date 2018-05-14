@@ -1,9 +1,17 @@
 ---
 - name: Setup redhat
   block:
-    - name: update all packages
+    # - name: update all packages
+    #   yum:
+    #     name: "*"
+    #     state: latest
+
+    - name: add devicemapper deps
       yum:
-        name: "*"
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
         state: latest
 
     - name: add epel repo
@@ -11,31 +19,34 @@
         name: epel-release
         state: latest
 
-    - name: remove python-pip
-      yum:
-        name: "{{ item }}"
-        state: absent
-      with_items:
-        - python-pip
-        - python-wheel
+    - name: get repo file
+      local_action:
+        module: get_url
+        url: "{{ docker_yum_repo }}"
+        dest: "/tmp/{{ docker_yum_repo_file }}"
+        mode: 0644
+        validate_certs: "{{ docker_verify_ssl }}"
 
-    - name: install latest pip
-      easy_install:
-        name: pip
-        executable: "{{ redhat_easy_install_bin }}"
-        state: latest
+    - name: get repo data
+      set_fact:
+        repo_data: "{{ lookup('repo_ini', '/tmp/' + docker_yum_repo_file) }}"
 
-    - name: remove docker-py
-      pip:
-        name: docker-py
-        state: absent
+    - name: add docker repos
+      yum_repository:
+        name: "{{ item.key }}"
+        description: "{{ item.value.name }}"
+        baseurl: "{{ item.value.baseurl }}"
+        enabled: "{{ item.value.enabled }}"
+        gpgcheck: "{{ item.value.gpgcheck }}"
+        gpgkey: "{{ item.value.gpgkey }}"
+      with_dict: "{{ repo_data }}"
 
     - name: install python packages
-      pip: 
+      pip:
         name: virtualenv,docker-compose,uptime
 
     - name: install python packages
-      pip: 
+      pip:
         name: "{{ item }}"
       with_items: "{{ required_pip }}"
 
@@ -56,6 +67,25 @@
       notify:
         - restart docker
 
-    - name: install docker
-      shell: curl -fsSL https://get.docker.com/ | sh
-  when: ansible_os_family == "RedHat"
+    - name: install docker-ce
+      yum:
+        name: "docker-ce-{{ docker_rpm_version }}"
+        state: present
+
+    - name: create filesystem paths
+      file:
+        dest: "{{ docker_daemon_config_file | dirname }}"
+        owner: root
+        group: root
+        state: directory
+
+    - name: create daemon config
+      template:
+        src: daemon.json.j2
+        dest: "{{ docker_daemon_config_file }}"
+        mode: 0644
+        owner: root
+        group: root
+      notify:
+        - restart docker
+  when: ansible_os_family in [ "RedHat", "ClearOS"]

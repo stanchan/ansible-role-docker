@@ -1,25 +1,32 @@
 ---
 required_packages: []
 required_pip: []
+is_service: no
+is_systemd: no
 debian_easy_install_bin: /usr/bin/easy_install
 redhat_easy_install_bin: /bin/easy_install
 
-docker_version: 18.03.0
+docker_version: 18.03.1
+docker_rpm_version: "{{ docker_version }}.ce-1.el{{ ansible_distribution_major_version}}.centos"
 
-docker_build_environment: false
-docker_glibc_environment: false
+docker_build_environment: no
+docker_glibc_environment: no
 docker_user: root
 docker_group: root
 
 docker_alpine_repo: http://dl-cdn.alpinelinux.org/alpine/edge/community
 docker_debian_repo: https://apt.dockerproject.org/repo
+docker_yum_repo: https://download.docker.com/linux/centos/docker-ce.repo
+docker_yum_repo_file: "{{ docker_yum_repo|basename }}"
+docker_verify_ssl: yes
 
 docker_apt_recv_key_server: hkp://p80.pool.sks-keyservers.net:80
 docker_apt_recv_key: 58118E89F3A912897C070ADBF76221572C52609D
 docker_apt_repo: "deb {{ docker_debian_repo }} {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} main"
 apt_cache_valid_time: 600
 
-glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
+alpine_glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
+alpine_glibc_package_file: "{{ alpine_glibc_package_url|basename }}"
 
 docker_daemon_config_file: /etc/docker/daemon.json
 docker_daemon_config:
