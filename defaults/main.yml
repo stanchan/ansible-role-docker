@@ -22,7 +22,7 @@ docker_verify_ssl: yes
 
 docker_apt_recv_key_server: hkp://p80.pool.sks-keyservers.net:80
 docker_apt_recv_key: 58118E89F3A912897C070ADBF76221572C52609D
-docker_apt_repo: "deb {{ docker_debian_repo }} {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} main"
+docker_apt_repo: "deb {{ docker_debian_repo }} {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} stable"
 apt_cache_valid_time: 600
 
 alpine_glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
