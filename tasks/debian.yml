@@ -13,10 +13,10 @@
       register: apt_key_check
 
     - name: update gpg key for docker repo
-      command: apt-key adv --keyserver {{ docker_apt_recv_key_server }} --recv-keys {{ docker_apt_recv_key }}
+      command: "curl -fsSL {{ docker_apt_gpg_key_url }} | sudo apt-key add -"
       ignore_errors: yes
       become: yes
-      when: apt_key_check.stdout.find("Docker Release Tool") == -1
+      when: apt_key_check.stdout.find("Docker Release (CE deb)") == -1
 
     - name: add docker repo
       apt_repository:
