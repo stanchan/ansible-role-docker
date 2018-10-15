@@ -8,20 +8,29 @@
       with_items: "{{ required_pip }}"
 
     - name: verify gpg key installed
-      command: apt-key list
+      shell: apt-key list
       no_log: yes
       register: apt_key_check
 
     - name: update gpg key for docker repo
-      command: "curl -fsSL {{ docker_apt_gpg_key_url }} | sudo apt-key add -"
+      shell: "curl -fsSL {{ docker_apt_gpg_key_url }} | sudo apt-key add -"
       ignore_errors: yes
       become: yes
       when: apt_key_check.stdout.find("Docker Release (CE deb)") == -1
 
-    - name: add docker repo
+    - name: add docker repo (amd64)
       apt_repository:
         repo: "{{ docker_apt_repo }}"
+        filename: docker
         state: present
+      when: ansible_architecture == "x86_64"
+
+    - name: add docker repo (armhf)
+      apt_repository:
+        repo: "{{ docker_apt_arm_repo }}"
+        filename: docker
+        state: present
+      when: ansible_architecture == "armv7l"
 
     - name: create apt pin
       copy:
@@ -50,7 +59,7 @@
 
     - name: install docker
       apt:
-        name: "docker-engine={{ docker_version }}~ce-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
+        name: "docker-ce={{ docker_debian_version }}"
         update_cache: yes
         state: present
         force: yes
@@ -58,7 +67,7 @@
 
     - name: create filesystem paths
       file:
-        dest: "{{ docker_daemon_config_file | dirname }}"
+        path: "{{ docker_daemon_config_file | dirname }}"
         owner: root
         group: root
         state: directory

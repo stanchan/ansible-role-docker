@@ -52,9 +52,15 @@
       name: python-dev,py-pip,py-openssl
       state: latest
       update_cache: yes
-  when: ansible_os_family == "Alpine"
+  when: ansible_os_family in [ "Alpine" ]
 
 - block:
+  - name: remove docker repo
+    file:
+      path: /etc/apt/sources.list.d/docker.list
+      state: absent
+    ignore_errors: yes
+
   - name: install dependent packages
     apt:
       name: "{{ item }}"
@@ -70,6 +76,11 @@
       - libffi-dev
       - python-dev
       - python-setuptools
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - libjpeg8-dev
+      - zlib1g-dev
 
   - name: run apt update
     apt:
@@ -90,7 +101,7 @@
     apt:
       name: python-pip
       state: absent
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family in [ "Debian" ]
 
 - block:
   - name: remove old versions
@@ -112,6 +123,7 @@
       - python-requests
       - python2-acme
       - python-docker-py
+      - python-urllib3
 
   - name: add dependencies
     yum:
@@ -127,22 +139,6 @@
       - python-pip
       - python-wheel
   when: ansible_os_family in [ "RedHat", "ClearOS"]
-
-- name: check pip version
-  shell: pip --version | cut -d" " -f2
-  register: pip_check
-  ignore_errors: yes
-
-- name: check pip latest
-  set_fact:
-    pip_latest: "{{ lookup('pypi_version', 'pip') }}"
-
-- name: install latest pip
-  easy_install:
-    name: pip
-    executable: "{{ redhat_easy_install_bin }}"
-    state: latest
-  when: pip_check.stdout.find(pip_latest) == -1
 
 - name: check docker-compose version
   shell: pip show docker-compose | grep Version | cut -d" " -f2
@@ -161,7 +157,7 @@
 
 - name: install prereq python packages
   pip:
-    name: wheel,acme,requests,virtualenv
+    name: wheel,acme,requests,virtualenv,urllib3
     state: latest
 
 - name: install latest docker-compose
