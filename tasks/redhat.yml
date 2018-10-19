@@ -39,7 +39,7 @@
         enabled: "{{ item.value.enabled }}"
         gpgcheck: "{{ item.value.gpgcheck }}"
         gpgkey: "{{ item.value.gpgkey }}"
-      with_dict: "{{ repo_data }}"
+      loop: "{{ repo_data | dict2items }}"
 
     - name: install python packages
       pip:
@@ -49,7 +49,7 @@
       pip:
         name: "{{ item.name }}"
         version: "{{ (item | default({})).version | default(omit) "
-      with_items: "{{ required_pip }}"
+      loop: "{{ required_pip }}"
 
     - name: create filesystem paths
       file:

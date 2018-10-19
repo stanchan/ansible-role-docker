@@ -5,13 +5,13 @@
       apk:
         name: "{{ item }}"
         state: present
-      with_items: "{{ required_packages }}"
+      loop: "{{ required_packages }}"
 
     - name: install python packages
       pip:
         name: "{{ item.name }}"
         version: "{{ (item | default({})).version | default(omit) "
-      with_items: "{{ required_pip }}"
+      loop: "{{ required_pip }}"
 
     - name: update all installed packages
       apk:

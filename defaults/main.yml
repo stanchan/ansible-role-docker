@@ -8,6 +8,56 @@ docker_version: 18.03.1
 docker_rpm_version: "{{ docker_version }}.ce-1.el{{ ansible_distribution_major_version}}.centos"
 docker_debian_version: "{{ docker_version }}~ce-0~{{ ansible_distribution|lower }}"
 
+docker_apt_remove_packages: []
+
+docker_apt_install_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg2
+  - software-properties-common
+  - dirmngr
+  - libffi-dev
+  - python-dev
+  - python-setuptools
+  - libssl-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - libjpeg8-dev
+  - zlib1g-dev
+
+docker_yum_remove_packages:
+  - docker
+  - docker-client
+  - docker-client-latest
+  - docker-common
+  - docker-compose
+  - docker-latest
+  - docker-latest-logrotate
+  - docker-logrotate
+  - docker-selinux
+  - docker-engine-selinux
+  - docker-engine
+  - python-requests
+  - python2-acme
+  - python-docker-py
+  - python-urllib3
+
+docker_yum_install_packages:
+  - rsync
+
+docker_pip_remove_packages:
+  - docker
+  - docker-py
+  - docker-compose
+
+docker_pip_install_packages:
+  - wheel
+  - acme
+  - requests
+  - virtualenv
+  - urllib3
+
 docker_build_environment: no
 docker_glibc_environment: no
 docker_user: root

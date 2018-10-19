@@ -2,7 +2,7 @@ galaxy_info:
   author: Stan Chan
   description: Docker
   license: license (Apache)
-  min_ansible_version: 2.4
+  min_ansible_version: 2.6
   # min_ansible_container_version:
   github_branch:
   platforms:
