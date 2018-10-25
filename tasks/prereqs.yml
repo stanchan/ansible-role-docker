@@ -10,7 +10,7 @@
     - name: install dependent packages
       apt:
         name: "{{ docker_apt_install_packages }}"
-        state: latest
+        state: present
         update_cache: yes
   when: ansible_os_family == "Debian"
 
@@ -25,9 +25,9 @@
     - name: install dependent packages
       yum:
         name: "{{ docker_yum_install_packages }}"
-        state: latest
+        state: present
         update_cache: yes
-  when: ansible_os_family in [ "RedHat", "ClearOS"]
+  when: ansible_os_family in [ "RedHat", "ClearOS" ]
 
 - name: remove old python packages
   pip:
@@ -37,4 +37,4 @@
 - name: install dependent python packages
   pip:
     name: "{{ docker_pip_install_packages }}"
-    state: latest
+    state: present

@@ -59,7 +59,7 @@ docker_pip_install_packages:
 
 docker_build_environment: no
 docker_glibc_environment: no
-docker_clean_install: no
+docker_clean_install: yes
 
 docker_user: root
 docker_group: root
