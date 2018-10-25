@@ -1,0 +1,18 @@
+---
+# - name: create docker group
+#   group:
+#     name: "{{ docker_group }}"
+#     system: yes
+#     state: present
+#   when: docker_group != "root"
+
+# - name: create docker user
+#   user:
+#     name: "{{ docker_user }}"
+#     state: present
+#     comment: "{{ docker_user }}"
+#     group: "{{ docker_group }}"
+#     shell: /sbin/nologin
+#     createhome: no
+#     system: yes
+#   when: docker_user != "root"

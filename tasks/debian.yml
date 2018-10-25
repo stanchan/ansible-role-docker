@@ -81,4 +81,10 @@
         group: root
       notify:
         - restart docker
+
+    - name: install python packages
+      pip:
+        name:
+          - docker-compose
+          - uptime
   when: ansible_os_family == "Debian"

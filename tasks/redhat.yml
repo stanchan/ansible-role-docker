@@ -1,10 +1,11 @@
 ---
 - name: Setup redhat
   block:
-    # - name: update all packages
-    #   yum:
-    #     name: "*"
-    #     state: latest
+    - name: install python packages
+      pip:
+        name: "{{ item.name }}"
+        version: "{{ (item | default({})).version | default(omit) }}"
+      loop: "{{ required_pip }}"
 
     - name: add devicemapper deps
       yum:
@@ -39,17 +40,13 @@
         enabled: "{{ item.value.enabled }}"
         gpgcheck: "{{ item.value.gpgcheck }}"
         gpgkey: "{{ item.value.gpgkey }}"
-      loop: "{{ repo_data | dict2items }}"
+      loop: "{{ repo_data | default({}) | dict2items }}"
 
     - name: install python packages
       pip:
-        name: virtualenv,docker-compose,uptime
-
-    - name: install python packages
-      pip:
-        name: "{{ item.name }}"
-        version: "{{ (item | default({})).version | default(omit) "
-      loop: "{{ required_pip }}"
+        name:
+          - docker-compose
+          - uptime
 
     - name: create filesystem paths
       file:

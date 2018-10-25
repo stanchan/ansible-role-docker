@@ -1,6 +1,13 @@
 ---
+- name: check docker version
+  shell: "{{ docker_bin }} --version"
+  register: docker_check
+  ignore_errors: yes
+  changed_when: no
+
 - name: Run prereqs
   include_tasks: prereqs.yml
+  when: docker_version not in docker_check or docker_clean_install
 
 - name: Run setup
   include_tasks: setup.yml

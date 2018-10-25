@@ -21,4 +21,6 @@ galaxy_info:
   galaxy_tags:
     - docker
     - docker-compose
+
 dependencies:
+  - { role: pip }

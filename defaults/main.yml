@@ -4,9 +4,9 @@ required_pip: []
 is_service: no
 is_systemd: no
 
-docker_version: 18.03.1
-docker_rpm_version: "{{ docker_version }}.ce-1.el{{ ansible_distribution_major_version}}.centos"
-docker_debian_version: "{{ docker_version }}~ce-0~{{ ansible_distribution|lower }}"
+docker_version: 18.06.1
+docker_rpm_version: "{{ docker_version }}.ce-3.el{{ ansible_distribution_major_version}}"
+docker_debian_version: "{{ docker_version }}~ce~3-0~{{ ansible_distribution|lower }}"
 
 docker_apt_remove_packages: []
 
@@ -23,7 +23,6 @@ docker_apt_install_packages:
   - libssl-dev
   - libxml2-dev
   - libxslt1-dev
-  - libjpeg8-dev
   - zlib1g-dev
 
 docker_yum_remove_packages:
@@ -60,6 +59,8 @@ docker_pip_install_packages:
 
 docker_build_environment: no
 docker_glibc_environment: no
+docker_clean_install: no
+
 docker_user: root
 docker_group: root
 
@@ -77,6 +78,7 @@ apt_cache_valid_time: 600
 alpine_glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
 alpine_glibc_package_file: "{{ alpine_glibc_package_url|basename }}"
 
+docker_bin: docker
 docker_daemon_config_file: /etc/docker/daemon.json
 docker_daemon_config:
   iptables: true

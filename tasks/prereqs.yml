@@ -1,18 +1,40 @@
 ---
-# - name: create docker group
-#   group:
-#     name: "{{ docker_group }}"
-#     system: yes
-#     state: present
-#   when: docker_group != "root"
+- name: Setup debian
+  block:
+    - name: remove old packages
+      apt:
+        name: "{{ docker_apt_remove_packages }}"
+        state: absent
+        update_cache: yes
 
-# - name: create docker user
-#   user:
-#     name: "{{ docker_user }}"
-#     state: present
-#     comment: "{{ docker_user }}"
-#     group: "{{ docker_group }}"
-#     shell: /sbin/nologin
-#     createhome: no
-#     system: yes
-#   when: docker_user != "root"
+    - name: install dependent packages
+      apt:
+        name: "{{ docker_apt_install_packages }}"
+        state: latest
+        update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Setup redhat
+  block:
+    - name: remove old packages
+      yum:
+        name: "{{ docker_yum_remove_packages }}"
+        state: absent
+        update_cache: yes
+
+    - name: install dependent packages
+      yum:
+        name: "{{ docker_yum_install_packages }}"
+        state: latest
+        update_cache: yes
+  when: ansible_os_family in [ "RedHat", "ClearOS"]
+
+- name: remove old python packages
+  pip:
+    name: "{{ docker_pip_remove_packages }}"
+    state: absent
+
+- name: install dependent python packages
+  pip:
+    name: "{{ docker_pip_install_packages }}"
+    state: latest

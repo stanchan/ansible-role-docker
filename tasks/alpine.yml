@@ -3,9 +3,8 @@
   block:
     - name: install additional packages
       apk:
-        name: "{{ item }}"
+        name: "{{ required_packages }}"
         state: present
-      loop: "{{ required_packages }}"
 
     - name: install python packages
       pip:
