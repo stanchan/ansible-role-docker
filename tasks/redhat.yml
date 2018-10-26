@@ -46,6 +46,7 @@
       pip:
         name:
           - docker-compose
+          - docker
           - uptime
 
     - name: create filesystem paths

@@ -1,0 +1,32 @@
+---
+- name: install docker
+  apt:
+    name: bridge-utils
+    state: present
+
+- name: stop and disable docker
+  systemd:
+    name: docker
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+  ignore_errors: true
+
+- name: remove local-content
+  command: ip link set docker0 down
+  ignore_errors: true
+
+- name: remove local-content
+  command: brctl delbr docker0
+  ignore_errors: true
+
+- name: remove docker files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/docker/network
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes

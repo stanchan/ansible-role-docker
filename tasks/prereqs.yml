@@ -1,13 +1,13 @@
 ---
 - name: Setup debian
   block:
-    - name: remove old packages
+    - name: remove old debian packages
       apt:
         name: "{{ docker_apt_remove_packages }}"
         state: absent
         update_cache: yes
 
-    - name: install dependent packages
+    - name: install dependent debian packages
       apt:
         name: "{{ docker_apt_install_packages }}"
         state: present
@@ -16,13 +16,13 @@
 
 - name: Setup redhat
   block:
-    - name: remove old packages
+    - name: remove old redhat packages
       yum:
         name: "{{ docker_yum_remove_packages }}"
         state: absent
         update_cache: yes
 
-    - name: install dependent packages
+    - name: install dependent redhat packages
       yum:
         name: "{{ docker_yum_install_packages }}"
         state: present

@@ -86,5 +86,6 @@
       pip:
         name:
           - docker-compose
+          - docker
           - uptime
   when: ansible_os_family == "Debian"

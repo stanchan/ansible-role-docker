@@ -93,8 +93,8 @@ docker_daemon_config:
 docker_apt_pin:
   - file: /etc/apt/preferences.d/docker-engine
     package: docker-engine
-    pin: "version {{ docker_version }}~ce-0~debian-{{ ansible_distribution_release }}"
-    pin_priority: 2000
+    pin: "release *"
+    pin_priority: -1
   - file: /etc/apt/preferences.d/docker-ce
     package: docker-ce
     pin: "version {{ docker_debian_version }}"
