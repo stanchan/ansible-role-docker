@@ -9,6 +9,8 @@
 
     - name: verify gpg key installed
       shell: apt-key list
+      ignore_errors: yes
+      changed_when: no
       no_log: yes
       register: apt_key_check
 

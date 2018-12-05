@@ -7,7 +7,7 @@
 
 - name: Run prereqs
   include_tasks: prereqs.yml
-  when: docker_version not in docker_check and docker_clean_install
+  when: docker_version not in docker_check.stdout and docker_clean_install
 
 - name: Run setup
   include_tasks: setup.yml
