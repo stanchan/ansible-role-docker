@@ -1,11 +1,16 @@
 ---
 - name: Setup redhat
   block:
+    - name: install additional yum packages
+      yum:
+        name: "{{ docker_required_packages }}"
+        state: present
+
     - name: install python packages
       pip:
         name: "{{ item.name }}"
         version: "{{ (item | default({})).version | default(omit) }}"
-      loop: "{{ required_pip }}"
+      loop: "{{ docker_required_pip }}"
 
     - name: add devicemapper deps
       yum:

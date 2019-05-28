@@ -1,13 +1,14 @@
 ---
-required_packages: []
-required_pip: []
 is_service: no
 is_systemd: no
 
-docker_version: 18.09.5
+docker_version: 18.09.6
 docker_version_epoch: 5
 docker_rpm_version: "{{ docker_version }}.ce-3.el{{ ansible_distribution_major_version}}"
 docker_debian_version: "{{ '{}:'.format(docker_version_epoch) if docker_version_epoch }}{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
+
+docker_required_packages: []
+docker_required_pip: []
 
 docker_apt_remove_packages:
   - docker
@@ -77,7 +78,8 @@ docker_verify_ssl: yes
 docker_apt_gpg_key_url: https://download.docker.com/linux/debian/gpg
 docker_apt_repo: "deb [arch=amd64] {{ docker_debian_repo }} {{ ansible_distribution_release }} stable"
 docker_apt_arm_repo: "deb [arch=armhf] {{ docker_debian_repo }} {{ ansible_distribution_release }} stable"
-apt_cache_valid_time: 600
+docker_apt_cache_valid_time: 600
+docker_apt_path: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 alpine_glibc_package_url: https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk
 alpine_glibc_package_file: "{{ alpine_glibc_package_url|basename }}"

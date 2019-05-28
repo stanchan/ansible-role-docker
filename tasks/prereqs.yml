@@ -6,12 +6,16 @@
         name: "{{ docker_apt_remove_packages }}"
         state: absent
         update_cache: yes
+      environment:
+        PATH: "{{ docker_apt_path }}"
 
     - name: install dependent debian packages
       apt:
         name: "{{ docker_apt_install_packages }}"
         state: present
         update_cache: yes
+      environment:
+        PATH: "{{ docker_apt_path }}"
   when: ansible_os_family == "Debian"
 
 - name: Setup redhat
