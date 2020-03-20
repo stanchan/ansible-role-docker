@@ -2,7 +2,7 @@
 is_service: no
 is_systemd: no
 
-docker_version: 18.09.6
+docker_version: 19.03.7
 docker_version_epoch: 5
 docker_rpm_version: "{{ docker_version }}.ce-3.el{{ ansible_distribution_major_version}}"
 docker_debian_version: "{{ '{}:'.format(docker_version_epoch) if docker_version_epoch }}{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
