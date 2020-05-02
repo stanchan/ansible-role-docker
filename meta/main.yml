@@ -23,6 +23,9 @@ galaxy_info:
         - bionic
         - xenial
 
+  categories:
+    - docker
+
   galaxy_tags:
     - docker
     - docker-compose
